@@ -1,76 +1,76 @@
 const authConfig = {
-  "siteName": "GoIndex", // 网站名称
-  "version": "_4.28", // 程序版本。用户不要手动修改
+  "siteName": "GoIndex",
+  "version": "_4.28", // Program version. This shouldn't be modified
   /*"client_id": "202264815644.apps.googleusercontent.com",
   "client_secret": "X4Z3ca8xfWDb1Voo-F9a7ZxJ",*/
-  // 【注意】强烈推荐使用自己的 client_id 和 client_secret
+  // Note: It is highly recommended to use your own client_id and client_secret.
   "client_id": "",
   "client_secret": "",
-  "refresh_token": "", // 授权 token
+  "refresh_token": "", // auth token
   /**
-   * 设置要显示的多个云端硬盘；按格式添加多个
-   * [id]: 可以是 团队盘id、子文件夹id、或者"root"（代表个人盘根目录）；
-   * [name]: 显示的名称
-   * [user]: Basic Auth 的用户名
-   * [pass]: Basic Auth 的密码
-   * [protect_file_link]: Basic Auth 是否用于保护文件链接，默认值（不设置时）为 false，即不保护文件链接（方便 直链下载/外部播放 等）
-   * 每个盘的 Basic Auth 都可以单独设置。Basic Auth 默认保护该盘下所有文件夹/子文件夹路径
-   * 【注意】默认不保护文件链接，这样可以方便 直链下载/外部播放;
-   *       如果要保护文件链接，需要将 protect_file_link 设置为 true，此时如果要进行外部播放等操作，需要将 host 替换为 user:pass@host 的 形式
-   * 不需要 Basic Auth 的盘，保持 user 和 pass 同时为空即可。（直接不设置也可以）
-   * 【注意】对于id设置为为子文件夹id的盘将不支持搜索功能（不影响其他盘）。
+   * You can set multiple disks to be displayed.
+   * [id]: Can be a team drive ID, a subfolder ID or "root" (for personal drive root)
+   * [name]: Displayed name
+   * [user]: Username for Basic Auth
+   * [pass]: Password for Basic Auth
+   * [protect_file_link]: whether Basic Auth is used to protect file links or not, the default value (if not set) is false, i.e. no file link is protected (convenient for direct download/external playback, etc.)
+   * Basic Auth can be set separately for each disk. Also applies to all folders/subfolders under them
+   * Note: By default, file links are not protected, which is convenient for direct download/external playback;
+   *       If you want to protect file links, you need to set protect_file_link to true. In this case, if you want to do external playback, you need to replace host with user:pass@host.
+   * If you don't want Basic Auth, just keep both user and pass empty. It's also okay to just not set them.
+   * Note: The search function is not supported on disks with IDs set to subfolder IDs (this does not affect other disks).
    */
   "roots": [
     {
       id: "root",
-      name: "个人盘"
+      name: "Personal drive"
     },
     {
       id: "drive_id",
-      name: "团队盘1",
+      name: "Team drive 1",
       user: 'user1',
       pass: "111",
       protect_file_link: true
     },
     {
       id: "folder_id",
-      name: "文件夹",
-      // 只设置密码、只设置用户名、同时设置用户名密码，都是可以的
+      name: "Folder",
+      // You can set only the username, only the password, or both username and password.
       user: '',
       pass: "222",
       protect_file_link: false
     }
   ],
   /**
-   * 文件列表页面每页显示的数量。【推荐设置值为 100 到 1000 之间】；
-   * 如果设置大于1000，会导致请求 drive api 时出错；
-   * 如果设置的值过小，会导致文件列表页面滚动条增量加载（分页加载）失效；
-   * 此值的另一个作用是，如果目录内文件数大于此设置值（即需要多页展示的），将会对首次列目录结果进行缓存。
+   * The number of files to display per page. [Recommended value is between 100 and 1000].
+   * If this value is greater than 1000, it causes an error when requesting the drive API.
+   * If this value is too small, it causes the incremental loading to fail.
+   * Another effect of this value is that if the number of files in the directory is greater than this value (i.e., if multiple pages need to be displayed), the results will be cached.
    */
   "files_list_page_size": 500,
   /**
-   * 搜索结果页面每页显示的数量。【推荐设置值为 50 到 1000 之间】；
-   * 如果设置大于1000，会导致请求 drive api 时出错；
-   * 如果设置的值过小，会导致搜索结果页面滚动条增量加载（分页加载）失效；
-   * 此值的大小影响搜索操作的响应速度。
+   * The number of search results displayed per page. [Recommended value is between 50 and 1000].
+   * If this value is greater than 1000, it causes an error when requesting the drive API.
+   * If this value is too small, it causes the incremental loading to fail.
+   * The size of this value affects the responsiveness of the search.
    */
   "search_result_list_page_size": 50,
-  // 确认有 cors 用途的可以开启
+  // If you want to allow CORS, you can enable this.
   "enable_cors_file_down": false,
   /**
-   * 上面的 basic auth 已经包含了盘内全局保护的功能。所以默认不再去认证 .password 文件内的密码;
-   * 如果在全局认证的基础上，仍需要给某些目录单独进行 .password 文件内的密码验证的话，将此选项设置为 true;
-   * 【注意】如果开启了 .password 文件密码验证，每次列目录都会额外增加查询目录内 .password 文件是否存在的开销。
+   * The basic auth above already includes on-disk global protection, so the default is not to authenticate the password in the .password file. So by default, passwords in .password files are no longer authenticated;
+   * If you still need to protect certain directories on top of the global auth using the .password file, set this option to true.
+   * Note: If you enable password authentication with .password files, an additional query will be added to each directory to check whether a .password file exists.
    */
   "enable_password_file_verify": false
 };
 
 /**
- * web ui 设置
+ * web ui settings
  */
 const uiConfig = {
-  // 此版本只支持 material
-  "theme": "material", // DO NOT set it to classic
+  // This version only supports material
+  "theme": "material", // DO NOT set this to classic
   "dark_mode": false,
   "main_color": "blue-grey",
   "accent_color": "blue",
@@ -129,7 +129,7 @@ function html(current_drive_order = 0, model = {}) {
     window.current_drive_order = ${current_drive_order};
     window.UI = JSON.parse('${JSON.stringify(uiConfig)}');
   </script>
-  <script src="//cdn.jsdelivr.net/combine/gh/jquery/jquery@3.2/dist/jquery.min.js,gh/yanzai/goindex@${authConfig.version}/themes/${uiConfig.theme}/app.js"></script>
+  <script src="//cdn.jsdelivr.net/combine/gh/jquery/jquery@3.2/dist/jquery.min.js,gh/uhwot/goindex/themes/${uiConfig.theme}/app.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/mdui/0.4.3/js/mdui.min.js"></script>
 </head>
 <body>
